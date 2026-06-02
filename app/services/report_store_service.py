@@ -94,3 +94,32 @@ def store_enterprise_report(record: StoredEnterpriseReportRecord) -> Optional[st
             "enterprise_ready": record.enterprise_ready,
         },
     )
+
+
+def _select(table: str, limit: int = 20) -> list:
+    """Fetch recent records ordered by created_at desc, or [] if unavailable."""
+    if not is_available():
+        return []
+    try:
+        db = get_client()
+        result = db.table(table).select("*").order("created_at", desc=True).limit(limit).execute()
+        return result.data or []
+    except Exception as exc:
+        log.warning("report_list_failed", table=table, error=str(exc))
+    return []
+
+
+def list_blueprints(limit: int = 20) -> list:
+    return _select("blueprint_requests", limit)
+
+
+def list_audits(limit: int = 20) -> list:
+    return _select("npm_audit_reports", limit)
+
+
+def list_sandbox(limit: int = 20) -> list:
+    return _select("sandbox_reports", limit)
+
+
+def list_enterprise(limit: int = 20) -> list:
+    return _select("enterprise_reports", limit)

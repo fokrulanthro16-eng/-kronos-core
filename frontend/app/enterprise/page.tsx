@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   Building2, RefreshCw, CheckCircle, Shield, Server,
-  DollarSign, Headphones, BookOpen, Link as LinkIcon,
+  DollarSign, Headphones, BookOpen, Link as LinkIcon, Download,
 } from "lucide-react";
 import { api, EnterpriseResponse } from "@/lib/api";
 import { formatDate, formatTimestamp } from "@/lib/format";
@@ -77,13 +77,24 @@ export default function EnterprisePage() {
             Boardroom-ready security and compliance report for institutional buyers and procurement teams.
           </p>
         </div>
-        <button
-          onClick={load}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#21262d] text-xs text-[#7d8590] hover:text-white hover:border-[#00ff88]/40 transition-all"
-        >
-          <RefreshCw className="h-3.5 w-3.5" />
-          Regenerate
-        </button>
+        <div className="flex items-center gap-2">
+          <a
+            href={`${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"}/api/v1/export/enterprise/pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#00ff88]/40 bg-[#00ff88]/5 text-xs text-[#00ff88] hover:bg-[#00ff88]/10 transition-all"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Download PDF
+          </a>
+          <button
+            onClick={load}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#21262d] text-xs text-[#7d8590] hover:text-white hover:border-[#00ff88]/40 transition-all"
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
+            Regenerate
+          </button>
+        </div>
       </div>
 
       {error && (

@@ -13,6 +13,7 @@ const links = [
   { href: "/audit", label: "Audit" },
   { href: "/sandbox", label: "Sandbox" },
   { href: "/enterprise", label: "Enterprise" },
+  { href: "/history", label: "History" },
   { href: "/saas", label: "SaaS" },
   { href: "/account", label: "Account" },
 ];

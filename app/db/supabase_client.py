@@ -44,7 +44,7 @@ def is_available() -> bool:
     if not settings.supabase_configured:
         return False
     try:
-        import supabase  # type: ignore[import]  # noqa: F401
+        from supabase import create_client  # type: ignore[import]  # noqa: F401
         return True
-    except ImportError:
+    except (ImportError, Exception):
         return False
