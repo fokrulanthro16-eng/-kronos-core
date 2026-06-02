@@ -4,7 +4,8 @@
 >
 > *The security layer every AI-first engineering team needs — and cannot build themselves.*
 
-[![Backend Tests](https://img.shields.io/badge/tests-50%20passed-00ff88?style=flat-square)](#testing)
+[![CI](https://github.com/Fokrul/kronos-core/actions/workflows/ci.yml/badge.svg)](https://github.com/Fokrul/kronos-core/actions/workflows/ci.yml)
+[![Backend Tests](https://img.shields.io/badge/tests-82%20passed-00ff88?style=flat-square)](#testing)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square)](#local-setup)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?style=flat-square)](#backend-api-endpoints)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square)](#frontend-pages)
@@ -25,10 +26,25 @@ Organisations adopting AI coding tools face an invisible compounding risk: AI ge
 
 KRONOS CORE is an API-first security gateway microservice that sits between a developer's intent and the AI model. It enforces secure execution standards before development begins, audits packages before they are installed, and inspects runtime behaviour before deployment is approved. It generates human-readable compliance reports suitable for boardrooms, procurement teams, and competition judges.
 
-- **Backend:** FastAPI microservice — 8 endpoints, rate-limited, CORS-locked, security-headered, structured logging
-- **Frontend:** Next.js dashboard — 6 pages, live API integration, dark cyber-security theme
-- **Tests:** 50 passing, 0 failing
+- **Backend:** FastAPI microservice — 13 endpoint groups, rate-limited, CORS-locked, security-headered, structured logging
+- **Frontend:** Next.js dashboard — 14 pages, live API integration, dark cyber-security theme
+- **Tests:** 82 passing, 0 failing
 - **Deploy:** Docker Compose in under 5 minutes
+
+### SaaS Features (Phase 1–6 complete)
+
+| Feature | Status |
+|---|---|
+| Blueprint generator | Live |
+| NPM audit (typosquat detection) | Live |
+| Sandbox inspection | Live |
+| Enterprise report + PDF export | Live |
+| Security score | Live |
+| Supabase Auth (login/register) | Live |
+| Report history (database-backed) | Live |
+| PDF export for reports | Live |
+| Billing & subscription foundation | Live |
+| CI/CD (GitHub Actions) | Live |
 
 ---
 
@@ -308,6 +324,35 @@ Test coverage:
 - `test_sandbox.py` — verdict, demo mode, blocked actions, process/network/fs structure
 - `test_security_score.py` — scoring, risk levels, enterprise readiness, category breakdown
 - `test_demo.py` — competition pitch, enterprise report, compliance alignment
+- `test_history.py` — history endpoints, demo mode without Supabase
+- `test_pdf_export.py` — PDF generation, content-type, %PDF header validation
+- `test_billing.py` — billing status, plans, checkout session demo mode, webhook
+
+---
+
+## Production Deployment
+
+See [`docs/PRODUCTION_DEPLOYMENT.md`](docs/PRODUCTION_DEPLOYMENT.md) for full options:
+- **Render** — push to GitHub, point at Dockerfile, done in minutes
+- **Railway** — `railway up`, set env vars, live
+- **VPS + Docker Compose** — full control, nginx reverse proxy included
+- **Vercel** (frontend) + Render (backend) — recommended split
+
+Pre-flight: work through [`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md) before going live.
+
+Smoke test: `pwsh scripts/production_smoke_test.ps1`
+
+---
+
+## CI/CD
+
+GitHub Actions CI runs on every push and pull request to `main`:
+- Python 3.12 backend test suite (`pytest -q`)
+- Next.js 22 frontend build (`npm run build`)
+
+No secrets required. No automatic deploys.
+
+See [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ---
 
