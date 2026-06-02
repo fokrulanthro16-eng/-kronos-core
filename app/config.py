@@ -39,6 +39,17 @@ class Settings(BaseSettings):
     def auth_configured(self) -> bool:
         return bool(self.jwt_secret)
 
+    # ── SaaS Phase 5 — Stripe billing (all optional) ─────────────────────────
+    stripe_secret_key: Optional[str] = None
+    stripe_webhook_secret: Optional[str] = None
+    stripe_price_starter: Optional[str] = None
+    stripe_price_pro: Optional[str] = None
+    stripe_price_enterprise: Optional[str] = None
+
+    @property
+    def stripe_configured(self) -> bool:
+        return bool(self.stripe_secret_key)
+
     model_config = {"env_file": ".env", "case_sensitive": False}
 
 

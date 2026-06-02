@@ -14,6 +14,7 @@ const links = [
   { href: "/sandbox", label: "Sandbox" },
   { href: "/enterprise", label: "Enterprise" },
   { href: "/history", label: "History" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/saas", label: "SaaS" },
   { href: "/account", label: "Account" },
 ];

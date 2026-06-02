@@ -10,7 +10,7 @@ from slowapi.errors import RateLimitExceeded
 from app.config import settings
 from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limiter import limiter
-from app.routers import health, blueprint, audit, sandbox, security, demo, enterprise, saas, auth, history, export
+from app.routers import health, blueprint, audit, sandbox, security, demo, enterprise, saas, auth, history, export, billing
 
 # Pinned Swagger UI version — avoids silent breakage from floating @5 tag.
 _SWAGGER_JS = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.18.2/swagger-ui-bundle.js"
@@ -122,3 +122,4 @@ app.include_router(saas.router)
 app.include_router(auth.router)
 app.include_router(history.router)
 app.include_router(export.router)
+app.include_router(billing.router)

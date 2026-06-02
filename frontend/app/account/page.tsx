@@ -6,16 +6,26 @@ import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import {
   User as UserIcon, Mail, Calendar, LogOut, Lock,
-  Loader2, Shield, AlertTriangle,
+  Loader2, Shield, AlertTriangle, CreditCard, Zap,
 } from "lucide-react";
 import { getCurrentUser, signOut, onAuthStateChange, supabaseConfigured } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
+
+const API = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
 export default function AccountPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [authState, setAuthState] = useState<"loading" | "demo" | "authenticated" | "unauthenticated">("loading");
   const [signingOut, setSigningOut] = useState(false);
+  const [billingStatus, setBillingStatus] = useState<{ demo_mode: boolean; current_plan: string } | null>(null);
+
+  useEffect(() => {
+    fetch(`${API}/api/v1/billing/status`)
+      .then((r) => r.json())
+      .then(setBillingStatus)
+      .catch(() => null);
+  }, []);
 
   useEffect(() => {
     if (!supabaseConfigured) {
@@ -164,6 +174,39 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key`}
               </div>
             )}
           </div>
+        </div>
+
+        {/* Subscription */}
+        <div className="card border-[#21262d]">
+          <div className="flex items-center gap-2 mb-4">
+            <CreditCard className="h-3.5 w-3.5 text-[#7d8590]" />
+            <p className="text-xs font-bold text-[#7d8590] uppercase tracking-wider">Subscription</p>
+          </div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Zap className="h-3.5 w-3.5 text-[#00ff88]" />
+              <span className="text-xs text-white font-medium capitalize">
+                {billingStatus?.current_plan ?? "Free"} Plan
+              </span>
+            </div>
+            {billingStatus?.demo_mode && (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                Demo
+              </span>
+            )}
+          </div>
+          {billingStatus?.demo_mode && (
+            <p className="text-[11px] text-[#484f58] mb-3">
+              Stripe billing is not configured — all features available in demo mode.
+            </p>
+          )}
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#00ff88]/40 bg-[#00ff88]/5 text-xs font-medium text-[#00ff88] hover:bg-[#00ff88]/10 transition-all"
+          >
+            <Zap className="h-3 w-3" />
+            View plans
+          </Link>
         </div>
 
         {/* Sign out */}
